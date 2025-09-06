@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Container, Form, Button, Card, Row, Col, InputGroup, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { FaUser, FaEnvelope, FaLock } from "react-icons/fa";
+// import { FaUser, FaEnvelope, FaLock } from "react-icons/fa";
 
 function Register() {
   const navigate = useNavigate();
@@ -41,7 +41,7 @@ function Register() {
                     <Form.Label>First Name</Form.Label>
                     <InputGroup>
                       <InputGroup.Text>
-                        <FaUser />
+                        {/* <FaUser /> */}
                       </InputGroup.Text>
                       <Form.Control type="text" name="fname"  value={user.fname || ""} onChange={handleChange} placeholder="First name" required />
                     </InputGroup>
@@ -52,7 +52,7 @@ function Register() {
                     <Form.Label>Last Name</Form.Label>
                     <InputGroup>
                       <InputGroup.Text>
-                        <FaUser />
+                        {/* <FaUser /> */}
                       </InputGroup.Text>
                       <Form.Control type="text" name="lname" value={user.lname || ""} onChange={handleChange} placeholder="Last name" required/>
                     </InputGroup>
@@ -63,7 +63,7 @@ function Register() {
                 <Form.Label>Email</Form.Label>
                 <InputGroup>
                   <InputGroup.Text>
-                    <FaEnvelope />
+                    {/* <FaEnvelope /> */}
                   </InputGroup.Text>
                   <Form.Control type="email" name="useremail" value={user.useremail || ""} onChange={handleChange} placeholder="Enter email" required/>
                 </InputGroup>
@@ -72,7 +72,7 @@ function Register() {
                 <Form.Label>Username</Form.Label>
                 <InputGroup>
                   <InputGroup.Text>
-                    <FaUser />
+                    {/* <FaUser /> */}
                   </InputGroup.Text>
                   <Form.Control type="text" name="username" value={user.username || ""} onChange={handleChange} placeholder="Choose username" required/>
                 </InputGroup>
@@ -83,7 +83,7 @@ function Register() {
                 <Form.Label>Password</Form.Label>
                 <InputGroup>
                   <InputGroup.Text>
-                    <FaLock />
+                    {/* <FaLock /> */}
                   </InputGroup.Text>
                   <Form.Control type="password" name="userpassword" value={user.userpassword || ""} onChange={handleChange} placeholder="Enter password"  required/>
                 </InputGroup>

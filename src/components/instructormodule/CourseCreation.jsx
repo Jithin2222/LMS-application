@@ -1,11 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, Button, Form, ListGroup, Ratio } from "react-bootstrap";
+import { useAuth } from "../../context/AuthContext";
 
-function CourseCreation({ courses = [], setCourses = () => {} }) {
+function CourseCreation() {
+  const { user } = useAuth(); // instructor info
+
+  // States for course fields
   const [courseTitle, setCourseTitle] = useState("");
+  const [courseAuthor, setCourseAuthor] = useState(user?.email || "");
+  const [courseDescription, setCourseDescription] = useState("");
+  const [coursePrice, setCoursePrice] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
+  const [courses, setCourses] = useState([]);
 
-  // Extract YouTube Video ID
+  useEffect(() => {
+    // Load instructor's courses from localStorage
+    const storedCourses = JSON.parse(localStorage.getItem("pendingCourses")) || [];
+    const myCourses = storedCourses.filter((c) => c.instructor === user.email);
+    setCourses(myCourses);
+  }, [user.email]);
+
   const getYouTubeId = (url) => {
     const regex =
       /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|embed)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
@@ -13,58 +27,48 @@ function CourseCreation({ courses = [], setCourses = () => {} }) {
     return match ? match[1] : null;
   };
 
-  // Add a new course
-  const addCourse = () => {
-    if (!courseTitle.trim()) {
-      alert("Enter a course title");
-      return;
+  const submitCourse = () => {
+    if (!courseTitle.trim()) return alert("Enter a course title");
+    if (!courseDescription.trim()) return alert("Enter course description");
+    if (!coursePrice.trim()) return alert("Enter course price");
+
+    const videos = [];
+    if (videoUrl.trim()) {
+      const videoId = getYouTubeId(videoUrl);
+      if (!videoId) return alert("Enter a valid YouTube URL");
+      videos.push({ id: videoId, title: `${courseTitle.trim()} - Intro Video` });
     }
-    setCourses([...courses, { title: courseTitle.trim(), videos: [] }]);
+
+    const newCourse = {
+      id: Date.now(),
+      title: courseTitle.trim(),
+      author: courseAuthor,
+      description: courseDescription.trim(),
+      price: coursePrice.trim(),
+      instructor: user.email,
+      status: "pending",
+      videos: videos,
+    };
+
+    // Save to localStorage for moderation
+    const pendingCourses = JSON.parse(localStorage.getItem("pendingCourses")) || [];
+    localStorage.setItem("pendingCourses", JSON.stringify([...pendingCourses, newCourse]));
+
+    setCourses([...courses, newCourse]);
+
+    // Reset form fields
     setCourseTitle("");
-  };
-
-  // Add video to a specific course (restrict to 1 video per course)
-  const addVideo = (index) => {
-    const videoId = getYouTubeId(videoUrl);
-    if (!videoId) {
-      alert("Enter a valid YouTube URL");
-      return;
-    }
-
-    const updatedCourses = [...courses];
-
-    if (!updatedCourses[index].videos) {
-      updatedCourses[index].videos = [];
-    }
-
-    if (updatedCourses[index].videos.length > 0) {
-      alert("This course already has a video assigned!");
-      return;
-    }
-
-    updatedCourses[index].videos.push({
-      id: videoId,
-      title: `${updatedCourses[index].title} - Intro Video`,
-    });
-
-    setCourses(updatedCourses);
+    setCourseDescription("");
+    setCoursePrice("");
     setVideoUrl("");
   };
 
-  // Delete a video
-  const deleteVideo = (courseIndex, videoIndex) => {
-    const updatedCourses = [...courses];
-    if (updatedCourses[courseIndex]?.videos) {
-      updatedCourses[courseIndex].videos.splice(videoIndex, 1);
-    }
-    setCourses(updatedCourses);
-  };
-
-  // Delete a course
-  const deleteCourse = (courseIndex) => {
-    const updatedCourses = [...courses];
-    updatedCourses.splice(courseIndex, 1);
-    setCourses(updatedCourses);
+  const clearCourses = () => {
+    const remainingCourses = JSON.parse(localStorage.getItem("pendingCourses")).filter(
+      (c) => c.instructor !== user.email
+    );
+    localStorage.setItem("pendingCourses", JSON.stringify(remainingCourses));
+    setCourses([]);
   };
 
   return (
@@ -72,81 +76,81 @@ function CourseCreation({ courses = [], setCourses = () => {} }) {
       <Card.Body>
         <Card.Title>📚 Course Creation</Card.Title>
 
-        {/* Add New Course */}
-        <Form.Group className="mb-3 d-flex">
+        <Form.Group className="mb-3">
           <Form.Control
             type="text"
             placeholder="Enter Course Title"
             value={courseTitle}
             onChange={(e) => setCourseTitle(e.target.value)}
           />
-          <Button variant="primary" onClick={addCourse} className="ms-2">
-            ➕ Add Course
-          </Button>
         </Form.Group>
 
-        {/* Display Courses */}
-        {(!courses || courses.length === 0) && <p>No courses added yet.</p>}
+        <Form.Group className="mb-3">
+          <Form.Control
+            type="text"
+            placeholder="Enter your name (Instructor)"
+            value={courseAuthor}
+            onChange={(e) => setCourseAuthor(e.target.value)}
+          />
+        </Form.Group>
 
-        {courses && courses.length > 0 && (
-          <ListGroup>
-            {courses.map((course, index) => (
-              <ListGroup.Item key={index} className="mb-3">
-                <div className="d-flex justify-content-between align-items-center">
-                  <h5 className="text-primary">{course.title}</h5>
-                  <Button
-                    variant="danger"
-                    size="sm"
-                    onClick={() => deleteCourse(index)}
-                  >
-                    🗑 Delete Course
-                  </Button>
-                </div>
+        <Form.Group className="mb-3">
+          <Form.Control
+            type="text"
+            placeholder="Enter Course Description"
+            value={courseDescription}
+            onChange={(e) => setCourseDescription(e.target.value)}
+          />
+        </Form.Group>
 
-                {/* Add Video to Course */}
-                <Form.Group className="d-flex mb-2 mt-2">
-                  <Form.Control
-                    type="text"
-                    placeholder="Paste YouTube URL"
-                    value={videoUrl}
-                    onChange={(e) => setVideoUrl(e.target.value)}
-                  />
-                  <Button
-                    variant="success"
-                    onClick={() => addVideo(index)}
-                    className="ms-2"
-                  >
-                    Add Video
-                  </Button>
-                </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Control
+            type="text"
+            placeholder="Enter Course Price"
+            value={coursePrice}
+            onChange={(e) => setCoursePrice(e.target.value)}
+          />
+        </Form.Group>
 
-                {/* Show Video */}
-                {course.videos && course.videos.length > 0 ? (
-                  course.videos.map((vid, vIndex) => (
-                    <Card key={vIndex} className="mb-2 shadow-sm">
-                      <Card.Body>
-                        <Card.Title>{vid.title}</Card.Title>
-                        <Ratio aspectRatio="16x9">
-                          <iframe
-                            src={`https://www.youtube.com/embed/${vid.id}`}
-                            title={vid.title}
-                            allowFullScreen
-                          ></iframe>
-                        </Ratio>
-                        <Button
-                          variant="outline-danger"
-                          size="sm"
-                          className="mt-2"
-                          onClick={() => deleteVideo(index, vIndex)}
-                        >
-                          ❌ Delete Video
-                        </Button>
-                      </Card.Body>
-                    </Card>
-                  ))
-                ) : (
-                  <p className="text-muted">No video added yet.</p>
-                )}
+        <Form.Group className="mb-3">
+          <Form.Control
+            type="text"
+            placeholder="Paste YouTube URL (optional)"
+            value={videoUrl}
+            onChange={(e) => setVideoUrl(e.target.value)}
+          />
+        </Form.Group>
+
+        <Button variant="primary" onClick={submitCourse} className="me-2">
+          ➕ Submit Course Request
+        </Button>
+        <Button variant="danger" onClick={clearCourses}>
+          Clear My Requests
+        </Button>
+
+        {courses.length === 0 && <p className="mt-3">No courses submitted yet.</p>}
+
+        {courses.length > 0 && (
+          <ListGroup className="mt-3">
+            {courses.map((course) => (
+              <ListGroup.Item key={course.id}>
+                <h5>{course.title}</h5>
+                <p><strong>Instructor:</strong> {course.author}</p>
+                <p><strong>Description:</strong> {course.description}</p>
+                <p><strong>Price:</strong> ${course.price}</p>
+                <span>Status: {course.status}</span>
+                {course.videos.map((vid, idx) => (
+                  <div key={idx} className="mt-2">
+                    <h6>{vid.title}</h6>
+                    <Ratio aspectRatio="16x9">
+                      <iframe
+                        src={`https://www.youtube.com/embed/${vid.id}`}
+                        title={vid.title}
+                        allowFullScreen
+                      ></iframe>
+                    </Ratio>
+                  </div>
+                ))}
               </ListGroup.Item>
             ))}
           </ListGroup>

@@ -10,14 +10,14 @@ import {
   Button,
   Card
 } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CourseCreation from "./CourseCreation";
 import StudentManagement from "./StudentManagement";
 import Analytics from "./Analytics";
 
 function InstructorDashboard({ courses, setCourses }) {
-  // State for active tab
   const [activeTab, setActiveTab] = useState("profile");
+  const navigate = useNavigate();
 
   // Mock instructor data
   const instructor = {
@@ -30,8 +30,7 @@ function InstructorDashboard({ courses, setCourses }) {
   // Logout handler
   const handleLogout = () => {
     alert("Logged out successfully!");
-    // clear tokens/localStorage if needed
-    // localStorage.removeItem("authToken");
+    navigate('/Login')
   };
 
   return (
@@ -91,7 +90,6 @@ function InstructorDashboard({ courses, setCourses }) {
               </Nav>
             </Col>
 
-            {/* Content Area */}
             <Col sm={9}>
               <Tab.Content>
                 <Tab.Pane eventKey="profile">
@@ -113,7 +111,7 @@ function InstructorDashboard({ courses, setCourses }) {
                       <Button variant="danger" onClick={handleLogout}>
                         🚪 Logout
                       </Button>
-                    </Card.Body>
+                    </Card.Body> 
                   </Card>
                 </Tab.Pane>
                 <Tab.Pane eventKey="students">

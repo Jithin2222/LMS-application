@@ -1,42 +1,51 @@
-import React, { useState } from 'react';
-import UserManagement from './UserManagement';
-import CourseModeration from './CourseModeration';
-import Reports from './Reports';
-
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext"; // ✅ useAuth from context
+import UserManagement from "./UserManagement";
+import CourseModeration from "./CourseModeration";
+import Reports from "./Reports";
 
 function Dashboard() {
-  const [activeTab, setActiveTab] = useState('user');
-    const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("user");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const navigate = useNavigate();
+  const { user, logout } = useAuth(); // ✅ get from AuthContext
 
-          const renderContent = () => {
-      switch (activeTab) {
-      case 'user':
+  const handleLogout = () => {
+    logout(); // clears auth state
+    navigate("/login"); // redirect
+  };
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case "user":
         return <UserManagement />;
-        case 'course':
+      case "course":
         return <CourseModeration />;
-      case 'reports':
+      case "reports":
         return <Reports />;
       default:
-        return null;
+        return <h4>Welcome, {user?.email || "Admin"} 👋</h4>;
     }
   };
 
   return (
-    <div className="d-flex flex-column flex-md-row" style={{ minHeight: '100vh' }}>
+    <div className="d-flex flex-column flex-md-row" style={{ minHeight: "100vh" }}>
       {/* Sidebar */}
       <div
         className={`bg-dark text-white p-3 sidebar transition-all ${
-          sidebarOpen ? 'd-block' : 'd-none d-md-block'
+          sidebarOpen ? "d-block" : "d-none d-md-block"
         }`}
-        style={{ width: '250px' }}
+        style={{ width: "250px" }}
       >
-        <h4 className="mb-4">⚙️ Admin Panel</h4>
+        <h4 className="mb-4">ADMIN PANEL</h4>
+        <p className="small">Logged in as: {user?.email || "Unknown"}</p>
         <ul className="nav flex-column">
           <li className="nav-item mb-2">
             <button
               className="btn btn-link text-white"
               onClick={() => {
-                setActiveTab('user');
+                setActiveTab("user");
                 setSidebarOpen(false);
               }}
             >
@@ -47,10 +56,10 @@ function Dashboard() {
             <button
               className="btn btn-link text-white"
               onClick={() => {
-                setActiveTab('course');
+                setActiveTab("course");
                 setSidebarOpen(false);
-              }}>
-            
+              }}
+            >
               Course Moderation
             </button>
           </li>
@@ -58,11 +67,16 @@ function Dashboard() {
             <button
               className="btn btn-link text-white"
               onClick={() => {
-                setActiveTab('reports');
+                setActiveTab("reports");
                 setSidebarOpen(false);
-              }}>
-            
+              }}
+            >
               Reports
+            </button>
+          </li>
+          <li>
+            <button className="btn btn-danger mt-3 w-100" onClick={handleLogout}>
+              🚪 Logout
             </button>
           </li>
         </ul>
@@ -70,17 +84,17 @@ function Dashboard() {
 
       {/* Main content */}
       <div className="flex-grow-1 p-4">
-        {/* Mobile toggle button */}
+        {/* Mobile menu button */}
         <button
           className="btn btn-outline-secondary d-md-none mb-3"
           onClick={() => setSidebarOpen(!sidebarOpen)}
         >
           ☰ Menu
         </button>
-
         {renderContent()}
       </div>
     </div>
   );
 }
+
 export default Dashboard;

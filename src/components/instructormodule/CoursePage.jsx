@@ -20,7 +20,7 @@ function CoursePage({ courses }) {
           paddingBottom: "10px",
         }}
       >
-        {courses.map((course, index) => (
+        {courses.map((course, index) => ( 
           <Card
             key={index}
             className="shadow"

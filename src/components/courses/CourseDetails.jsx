@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Container, Row, Col, Card, Button, ListGroup, Badge, Accordion, Navbar, Nav } from "react-bootstrap";
 import { useCourses } from "./CoursesContext";
-import { FaStar, FaCertificate, FaDownload, FaPlayCircle } from "react-icons/fa";
+// import { FaStar, FaCertificate, FaDownload, FaPlayCircle } from "react-icons/fa";
 
 const CourseDetails = () => {
   const { id } = useParams();

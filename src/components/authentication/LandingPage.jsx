@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Row, Col, Button, Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { FaChalkboardTeacher, FaLaptopCode, FaCertificate } from "react-icons/fa";
+// import { FaChalkboardTeacher, FaLaptopCode, FaCertificate } from "react-icons/fa";
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -60,21 +60,21 @@ const LandingPage = () => {
           <Row className="g-4">
             <Col md={4}>
               <Card className="shadow-sm border-0 text-center p-4 h-100">
-                <FaChalkboardTeacher size={50} className="text-primary mb-3" />
+                {/* <FaChalkboardTeacher size={50} className="text-primary mb-3" /> */}
                 <h5 className="fw-bold">Expert Instructors</h5>
                 <p>Learn from industry experts and skilled instructors with real-world experience.</p>
               </Card>
             </Col>
             <Col md={4}>
               <Card className="shadow-sm border-0 text-center p-4 h-100">
-                <FaLaptopCode size={50} className="text-success mb-3" />
+                {/* <FaLaptopCode size={50} className="text-success mb-3" /> */}
                 <h5 className="fw-bold">Hands-On Learning</h5>
                 <p>Practical projects and exercises to master new skills effectively and efficiently.</p>
               </Card>
             </Col>
             <Col md={4}>
               <Card className="shadow-sm border-0 text-center p-4 h-100">
-                <FaCertificate size={50} className="text-warning mb-3" />
+                {/* <FaCertificate size={50} className="text-warning mb-3" /> */}
                 <h5 className="fw-bold">Certification</h5>
                 <p>Earn certificates upon course completion to showcase your achievements and boost your career.</p>
               </Card>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Card, Container, Row, Col, Badge } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { FaCertificate, FaClock, FaUser } from 'react-icons/fa';
+// import { FaCertificate, FaClock, FaUser } from 'react-icons/fa';
 
 const PurchaseCourse = () => {
     const navigate = useNavigate();

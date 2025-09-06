@@ -36,3 +36,4 @@ export const CoursesProvider = ({children}) => {
 }
 
 export const useCourses = () => useContext(CourseContext);
+export default CoursesProvider;

@@ -18,8 +18,8 @@ const NavPage = () => {
             <Nav className='align-items-center'>
               <Nav.Link href="/CourseList" >COURSES</Nav.Link>        
               <NavDropdown title="SUPPORT" id="basic-nav-dropdown">
-                <NavDropdown.Item href="#action/3.1">About</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">Contact</NavDropdown.Item>
+                <NavDropdown.Item href="/Login">Switch to Instructor</NavDropdown.Item>
+                <NavDropdown.Item href="/Login">Switch to Admin</NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item href="#action/3.4">Service</NavDropdown.Item>
               </NavDropdown>

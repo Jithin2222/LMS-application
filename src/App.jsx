@@ -30,6 +30,7 @@ import Analytics from './components/instructormodule/Analytics';
 import CourseCreation from './components/instructormodule/CourseCreation';
 import StudentManagement from './components/instructormodule/StudentManagement';
 import CourseCard from './components/courses/CourseCard';
+
 import CoursesContext from './components/courses/CoursesContext';
 import Setting from './pages/Setting';
 import Result from './components/quiz/Result';
@@ -39,6 +40,7 @@ import ProgressBar from './components/dashboard/ProgressBar';
 import NavPage from './components/shared/NavPage';
 import Testimonials from './components/shared/Testimonials';
 import ThemeContext from './context/ThemeContext';
+import { AuthProvider } from './context/AuthContext';
 
 const App = () => {
 
@@ -79,7 +81,7 @@ const App = () => {
 
 
           <Route path='/CourseModeration' element={<CourseModeration/>}/>
-          <Route path='/dashboard' element={<Dashboard/>}/>
+          <Route path='/admindashboard' element={<Dashboard/>}/>
           <Route path='/reports' element={<Reports/>}/>
           <Route path='/usermanagement' element={<UserManagement/>}/>
 
@@ -91,6 +93,8 @@ const App = () => {
           <Route path='/analytics' element={<Analytics/>}/>
           <Route path='/coursecreation' element={<CourseCreation/>}/>
           <Route path='/studentManagement' element={<StudentManagement/>}/>
+
+          <Route path='/authcontext' element={<AuthProvider/>}/>
         </Routes>
       </BrowserRouter>
     </>

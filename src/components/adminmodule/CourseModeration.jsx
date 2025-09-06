@@ -1,74 +1,86 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
+import { Card, Button, ListGroup, Ratio } from "react-bootstrap";
 
- function CourseModeration() {
-  const [courses, setCourses] = useState([
-    { id: 1, title: 'Intro to React', description: 'Basics of React', status: 'pending' },
-    { id: 2, title: 'Advanced JavaScript', description: 'Deep dive into JS', status: 'pending' },
-  ]);
+function CourseModeration() {
+  const [courses, setCourses] = useState([]);
 
-  const handleApprove = (id) => {
-    setCourses(courses.map(course => 
-      course.id === id ? { ...course, status: 'approved' } : course
-    ));
-  };
+  useEffect(() => {
+    const pending = JSON.parse(localStorage.getItem("pendingCourses")) || [];
+    setCourses(pending);
+  }, []);
 
-  const handleReject = (id) => {
-    setCourses(courses.map(course => 
-      course.id === id ? { ...course, status: 'rejected' } : course
-    ));
+  const updateCourseStatus = (id, status) => {
+    const updated = courses.map((c) =>
+      c.id === id ? { ...c, status } : c
+    );
+    setCourses(updated);
+
+    // Update localStorage
+    localStorage.setItem("pendingCourses", JSON.stringify(updated));
+
+    // If approved, also add to approvedCourses
+    if (status === "approved") {
+      const approvedCourses = JSON.parse(localStorage.getItem("approvedCourses")) || [];
+      const courseToAdd = updated.find(c => c.id === id);
+      localStorage.setItem("approvedCourses", JSON.stringify([...approvedCourses, courseToAdd]));
+    }
   };
 
   return (
     <div className="container my-4">
       <h2 className="text-center">📚 Course Moderation</h2>
-
       <div className="alert alert-info mt-4" role="alert">
         Review and approve course submissions before they go live.
       </div>
 
-      <div className="row">
-        <div className="col-12 col-md-6 mb-4">
-          <div className="card">
-            <div className="card-header bg-primary text-white">
-              Moderation Tasks
-            </div>
-            <ul className="list-group list-group-flush">
-              <li className="list-group-item">✅ Review course titles & descriptions</li>
-              <li className="list-group-item">📝 Check content quality and structure</li>
-              <li className="list-group-item">🚫 Reject incomplete or duplicate submissions</li>
-            </ul>
-          </div>
-        </div>
+      {courses.length === 0 && <p>No courses submitted.</p>}
 
-        <div className="col-12 col-md-6">
-          <div className="card">
-            <div className="card-header bg-secondary text-white">
-              Pending Courses
-            </div>
-            <ul className="list-group list-group-flush">
-              {courses.map(course => (
-                <li key={course.id} className="list-group-item d-flex justify-content-between align-items-start">
-                  <div>
-                    <h6>{course.title}</h6>
-                    <small>{course.description}</small><br/>
-                    <span className={`badge bg-${course.status === 'approved' ? 'success' : course.status === 'rejected' ? 'danger' : 'warning'} text-uppercase`}>
-                      {course.status}
-                    </span>
-                  </div>
-                  {course.status === 'pending' && (
-                    <div className="btn-group">
-                      <button className="btn btn-sm btn-success" onClick={() => handleApprove(course.id)}>Approve</button>
-                      <button className="btn btn-sm btn-danger" onClick={() => handleReject(course.id)}>Reject</button>
-                    </div>
-                  )}
-                </li>
-              ))}
-              {courses.length === 0 && <li className="list-group-item">No courses available.</li>}
-            </ul>
-          </div>
-        </div>
-      </div>
+      <ListGroup>
+        {courses.map((course) => (
+          <ListGroup.Item key={course.id} className="mb-3">
+            <h5>{course.title}</h5>
+            <p><strong>Instructor:</strong> {course.author}</p>
+            <p><strong>Description:</strong> {course.description}</p>
+            <p><strong>Price:</strong> ${course.price}</p>
+            <p><strong>Status:</strong> {course.status}</p>
+
+            {course.videos.map((vid, idx) => (
+              <div key={idx} className="mt-2">
+                <h6>{vid.title}</h6>
+                <Ratio aspectRatio="16x9">
+                  <iframe
+                    src={`https://www.youtube.com/embed/${vid.id}`}
+                    title={vid.title}
+                    allowFullScreen
+                  />
+                </Ratio>
+              </div>
+            ))}
+
+            {course.status === "pending" && (
+              <div className="mt-2">
+                <Button
+                  variant="success"
+                  size="sm"
+                  className="me-2"
+                  onClick={() => updateCourseStatus(course.id, "approved")}
+                >
+                  Approve
+                </Button>
+                <Button
+                  variant="danger"
+                  size="sm"
+                  onClick={() => updateCourseStatus(course.id, "rejected")}
+                >
+                  Reject
+                </Button>
+              </div>
+            )}
+          </ListGroup.Item>
+        ))}
+      </ListGroup>
     </div>
   );
 }
+
 export default CourseModeration;
