@@ -11,15 +11,7 @@ const CoursePage = () => {
 
   return (
     <>
-    <Navbar
-        expand="lg"
-        sticky="top"
-        className="py-2"
-        style={{
-          backgroundColor: "lightgrey",
-          background: "linear-gradient(90deg, #a8e6f0 0%, #f6d5b3 50%, #f9a87b 100%)",
-        }}
-      >
+    <Navbar  expand="lg"  sticky="top"  className="py-2" style={{backgroundColor: "#ffffffc5",  }}>
         <Container fluid className="px-3">
           <Navbar.Brand
             href="/home"
@@ -31,13 +23,8 @@ const CoursePage = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" className="ms-auto" />
           <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
             <Nav className="align-items-center">
-              <Nav.Link href="#">
-                <i className="bi bi-search"></i>
-              </Nav.Link>
-              <Nav.Link href="#">Instructor Info</Nav.Link>
-              <Nav.Link href="#">Forum</Nav.Link>
-              <Nav.Link href="#">
-                <i className="bi bi-bookmark"></i>
+              <Nav.Link href="/home">
+                <i class="bi bi-x-lg"></i>
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>
@@ -50,7 +37,7 @@ const CoursePage = () => {
       <Row>
         {courses.map((course) => (
           <Col md={6} lg={4} key={course.id} className="mb-4">
-            <Card className="shadow-sm h-100">
+            <Card className="shadow-sm h-100" style={{backgroundColor:"#ffffff5e"}}>
               <Card.Body>
                 {course.videos.map((vid, idx) => (
                   <div key={idx} className="mb-2">

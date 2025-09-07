@@ -2,7 +2,6 @@ import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Container, Row, Col, Card, Button, ListGroup, Badge, Accordion, Navbar, Nav } from "react-bootstrap";
 import { useCourses } from "./CoursesContext";
-// import { FaStar, FaCertificate, FaDownload, FaPlayCircle } from "react-icons/fa";
 
 const CourseDetails = () => {
   const { id } = useParams();
@@ -70,10 +69,10 @@ const CourseDetails = () => {
 
                 <h5 className="mt-4" >What you’ll learn</h5>
                 <ListGroup className="mb-4 list-group-flush">
-                  <ListGroup.Item><FaPlayCircle className="me-2 text-primary" /> Core fundamentals of {course.name}</ListGroup.Item>
-                  <ListGroup.Item><FaCertificate className="me-2 text-success"/> Real-world projects & assignments</ListGroup.Item>
-                  <ListGroup.Item><FaDownload className="me-2 text-info"/> Hands-on exercises with latest tools</ListGroup.Item>
-                  <ListGroup.Item><FaCertificate className="me-2 text-warning"/> Certification upon completion</ListGroup.Item>
+                  <ListGroup.Item> Core fundamentals of {course.name}</ListGroup.Item>
+                  <ListGroup.Item> Real-world projects & assignments</ListGroup.Item>
+                  <ListGroup.Item> Hands-on exercises with latest tools</ListGroup.Item>
+                  <ListGroup.Item> Certification upon completion</ListGroup.Item>
                 </ListGroup>
 
                 <h5 className="mt-4 mb-3">Course Syllabus</h5>
@@ -102,7 +101,7 @@ const CourseDetails = () => {
               <h3 className="fw-bold text-success mb-3">{course.price}</h3>
               <p className="mb-2">
                 <Badge bg="warning" text="dark" className="me-2">
-                  <FaStar className="me-1" /> {course.rating}
+                   {course.rating}
                 </Badge>
                 <Badge bg="info">{course.level || "Beginner Friendly"}</Badge>
               </p>

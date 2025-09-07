@@ -74,7 +74,13 @@ function UserDashboard() {
     );
     setEnrolledCourses(updated);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-  };
+    const currentUser = JSON.parse(localStorage.getItem("userData"));
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const updatedUsers = users.map((u) => 
+      u.useremail === currentUser.useremail ? {...u, progress: newProgress} : u
+    );
+    localStorage.setItem("users",JSON.stringify(updatedUsers));
+    };
 
   const toggleTask = (courseId, type, label) => {
     setCompletedByCourse((prev) => {

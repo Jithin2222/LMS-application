@@ -23,7 +23,6 @@ const Forum = () => {
   return (
     <Container className="py-5">
       <h2 className="fw-bold mb-4 text-center">Community Forum</h2>
-
       <Card className="shadow-sm border-0 rounded-3 p-4 mb-4">
         <Form>
           <Form.Group>

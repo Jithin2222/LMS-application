@@ -3,22 +3,20 @@ import { Card, Button, Form, ListGroup, Ratio } from "react-bootstrap";
 import { useAuth } from "../../context/AuthContext";
 
 function CourseCreation() {
-  const { user } = useAuth(); // instructor info
-
-  // States for course fields
+  const { currentUser } = useAuth(); 
   const [courseTitle, setCourseTitle] = useState("");
-  const [courseAuthor, setCourseAuthor] = useState(user?.email || "");
+  const [courseAuthor, setCourseAuthor] = useState(currentUser?.email || "");
   const [courseDescription, setCourseDescription] = useState("");
   const [coursePrice, setCoursePrice] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
   const [courses, setCourses] = useState([]);
 
   useEffect(() => {
-    // Load instructor's courses from localStorage
+    if (!currentUser) return;
     const storedCourses = JSON.parse(localStorage.getItem("pendingCourses")) || [];
-    const myCourses = storedCourses.filter((c) => c.instructor === user.email);
+    const myCourses = storedCourses.filter((c) => c.instructor === currentUser.email);
     setCourses(myCourses);
-  }, [user.email]);
+  }, [currentUser]);
 
   const getYouTubeId = (url) => {
     const regex =
@@ -45,18 +43,15 @@ function CourseCreation() {
       author: courseAuthor,
       description: courseDescription.trim(),
       price: coursePrice.trim(),
-      instructor: user.email,
+      instructor: currentUser.email,
       status: "pending",
       videos: videos,
     };
 
-    // Save to localStorage for moderation
     const pendingCourses = JSON.parse(localStorage.getItem("pendingCourses")) || [];
     localStorage.setItem("pendingCourses", JSON.stringify([...pendingCourses, newCourse]));
 
     setCourses([...courses, newCourse]);
-
-    // Reset form fields
     setCourseTitle("");
     setCourseDescription("");
     setCoursePrice("");
@@ -65,17 +60,20 @@ function CourseCreation() {
 
   const clearCourses = () => {
     const remainingCourses = JSON.parse(localStorage.getItem("pendingCourses")).filter(
-      (c) => c.instructor !== user.email
+      (c) => c.instructor !== currentUser.email
     );
     localStorage.setItem("pendingCourses", JSON.stringify(remainingCourses));
     setCourses([]);
   };
 
+  if (!currentUser) {
+    return <p className="text-danger">⚠️ You must be logged in as an instructor to create courses.</p>;
+  }
+
   return (
-    <Card className="shadow">
+    <Card className="shadow" style={{backgroundColor:"transparent"}}>
       <Card.Body>
         <Card.Title>📚 Course Creation</Card.Title>
-
         <Form.Group className="mb-3">
           <Form.Control
             type="text"
@@ -84,7 +82,6 @@ function CourseCreation() {
             onChange={(e) => setCourseTitle(e.target.value)}
           />
         </Form.Group>
-
         <Form.Group className="mb-3">
           <Form.Control
             type="text"
@@ -93,7 +90,6 @@ function CourseCreation() {
             onChange={(e) => setCourseAuthor(e.target.value)}
           />
         </Form.Group>
-
         <Form.Group className="mb-3">
           <Form.Control
             type="text"
@@ -102,7 +98,6 @@ function CourseCreation() {
             onChange={(e) => setCourseDescription(e.target.value)}
           />
         </Form.Group>
-
         <Form.Group className="mb-3">
           <Form.Control
             type="text"
@@ -111,7 +106,6 @@ function CourseCreation() {
             onChange={(e) => setCoursePrice(e.target.value)}
           />
         </Form.Group>
-
         <Form.Group className="mb-3">
           <Form.Control
             type="text"
@@ -120,16 +114,14 @@ function CourseCreation() {
             onChange={(e) => setVideoUrl(e.target.value)}
           />
         </Form.Group>
-
         <Button variant="primary" onClick={submitCourse} className="me-2">
-          ➕ Submit Course Request
+          <i className="bi bi-plus-lg" variant="dark" ></i>
+          Submit Course Request
         </Button>
         <Button variant="danger" onClick={clearCourses}>
           Clear My Requests
         </Button>
-
         {courses.length === 0 && <p className="mt-3">No courses submitted yet.</p>}
-
         {courses.length > 0 && (
           <ListGroup className="mt-3">
             {courses.map((course) => (

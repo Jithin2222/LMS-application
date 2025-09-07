@@ -17,7 +17,7 @@ const NavPage = () => {
           <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
             <Nav className='align-items-center'>
               <Nav.Link href="/CourseList" >COURSES</Nav.Link>        
-              <NavDropdown title="SUPPORT" id="basic-nav-dropdown">
+              <NavDropdown title="ROLE" id="basic-nav-dropdown">
                 <NavDropdown.Item href="/Login">Switch to Instructor</NavDropdown.Item>
                 <NavDropdown.Item href="/Login">Switch to Admin</NavDropdown.Item>
                 <NavDropdown.Divider />

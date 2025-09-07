@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Container, Form, Button, Card, Row, Col, InputGroup, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-// import { FaUser, FaEnvelope, FaLock } from "react-icons/fa";
+
 
 function Register() {
   const navigate = useNavigate();
@@ -13,6 +13,11 @@ function Register() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    const existingUsers = JSON.parse(localStorage.getItem("users")) || [];
+
+    const newUsers = [...existingUsers, user];
+    localStorage.setItem("users", JSON.stringify(newUsers));
+    
     localStorage.setItem("userData", JSON.stringify(user));
     navigate("/home");
   };
@@ -41,7 +46,7 @@ function Register() {
                     <Form.Label>First Name</Form.Label>
                     <InputGroup>
                       <InputGroup.Text>
-                        {/* <FaUser /> */}
+                        <i class="bi bi-person-fill"></i>
                       </InputGroup.Text>
                       <Form.Control type="text" name="fname"  value={user.fname || ""} onChange={handleChange} placeholder="First name" required />
                     </InputGroup>
@@ -52,7 +57,7 @@ function Register() {
                     <Form.Label>Last Name</Form.Label>
                     <InputGroup>
                       <InputGroup.Text>
-                        {/* <FaUser /> */}
+                        <i class="bi bi-people-fill"></i>
                       </InputGroup.Text>
                       <Form.Control type="text" name="lname" value={user.lname || ""} onChange={handleChange} placeholder="Last name" required/>
                     </InputGroup>
@@ -63,7 +68,7 @@ function Register() {
                 <Form.Label>Email</Form.Label>
                 <InputGroup>
                   <InputGroup.Text>
-                    {/* <FaEnvelope /> */}
+                    <i class="bi bi-envelope-fill"></i>
                   </InputGroup.Text>
                   <Form.Control type="email" name="useremail" value={user.useremail || ""} onChange={handleChange} placeholder="Enter email" required/>
                 </InputGroup>
@@ -72,7 +77,7 @@ function Register() {
                 <Form.Label>Username</Form.Label>
                 <InputGroup>
                   <InputGroup.Text>
-                    {/* <FaUser /> */}
+                    <i class="bi bi-person-badge"></i>
                   </InputGroup.Text>
                   <Form.Control type="text" name="username" value={user.username || ""} onChange={handleChange} placeholder="Choose username" required/>
                 </InputGroup>
@@ -83,7 +88,7 @@ function Register() {
                 <Form.Label>Password</Form.Label>
                 <InputGroup>
                   <InputGroup.Text>
-                    {/* <FaLock /> */}
+                    <i class="bi bi-lock-fill"></i>
                   </InputGroup.Text>
                   <Form.Control type="password" name="userpassword" value={user.userpassword || ""} onChange={handleChange} placeholder="Enter password"  required/>
                 </InputGroup>
@@ -91,7 +96,9 @@ function Register() {
               <Form.Group className="mb-3">
                 <Form.Label>Role</Form.Label>
                 <Form.Select name="role" value={user.role || ""} onChange={handleChange} required>
-                  <option value="">Select role...</option>
+                  <option value="">
+                    Select role...
+                  </option>
                   <option value="Student">Student</option>
                   <option value="Instructor">Instructor</option>
                   <option value="Guest">Guest</option>

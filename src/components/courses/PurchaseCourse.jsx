@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button, Card, Container, Row, Col, Badge } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
-// import { FaCertificate, FaClock, FaUser } from 'react-icons/fa';
 
 const PurchaseCourse = () => {
     const navigate = useNavigate();
@@ -20,17 +19,28 @@ const PurchaseCourse = () => {
     }
 
     const handlePayment = () => {
-        const storedCourses = JSON.parse(localStorage.getItem("enrolledCourses")) || [];
-        const isAlreadyEnrolled = storedCourses.some((c) => c.id === course.id);
+  const storedCourses = JSON.parse(localStorage.getItem("enrolledCourses")) || [];
+  const isAlreadyEnrolled = storedCourses.some((c) => c.id === course.id);
 
-        if (!isAlreadyEnrolled) {
-            storedCourses.push(course);
-            localStorage.setItem("enrolledCourses", JSON.stringify(storedCourses));
-        }
+  if (!isAlreadyEnrolled) {
+    storedCourses.push(course);
+    localStorage.setItem("enrolledCourses", JSON.stringify(storedCourses));
+  }
 
-        alert("You have successfully enrolled in the selected course!");
-        navigate("/profile");
-    };
+  const purchases = JSON.parse(localStorage.getItem("purchases")) || [];
+  purchases.push({
+    id: course.id,
+    name: course.name,
+    price: parseFloat(course.price.replace("$", "")) || 0, 
+    date: new Date().toISOString(),
+  });
+  localStorage.setItem("purchases", JSON.stringify(purchases));
+
+  alert("You have successfully enrolled in the selected course!");
+  navigate("/profile");
+};
+
+
 
     return (
         <Container className="py-5">
@@ -48,16 +58,16 @@ const PurchaseCourse = () => {
 
                         <h2 className="fw-bold mb-2">{course.name}</h2>
                         <p className="text-muted mb-3">
-                            <FaUser className="me-2" /> Instructor: {course.instructor}
+                            Instructor: {course.instructor}
                         </p>
 
                         <Row className="mb-3">
                             <Col>
                                 <Badge bg="success" className="me-2 p-2">
-                                    <FaCertificate className="me-1" /> Certificate
+                                     Certificate
                                 </Badge>
                                 <Badge bg="info" className="p-2">
-                                    <FaClock className="me-1" /> {course.duration || "3h 30m"}
+                                    {course.duration || "3h 30m"}
                                 </Badge>
                             </Col>
                         </Row>

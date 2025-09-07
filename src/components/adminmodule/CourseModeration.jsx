@@ -14,16 +14,29 @@ function CourseModeration() {
       c.id === id ? { ...c, status } : c
     );
     setCourses(updated);
-
-    // Update localStorage
     localStorage.setItem("pendingCourses", JSON.stringify(updated));
 
-    // If approved, also add to approvedCourses
     if (status === "approved") {
       const approvedCourses = JSON.parse(localStorage.getItem("approvedCourses")) || [];
       const courseToAdd = updated.find(c => c.id === id);
       localStorage.setItem("approvedCourses", JSON.stringify([...approvedCourses, courseToAdd]));
     }
+  };
+
+  const removeCourse = (id) => {
+    const updatedPending = courses.filter(c => c.id !== id);
+    setCourses(updatedPending);
+    localStorage.setItem("pendingCourses", JSON.stringify(updatedPending));
+
+    const approvedCourses = JSON.parse(localStorage.getItem("approvedCourses")) || [];
+    const updatedApproved = approvedCourses.filter(c => c.id !== id);
+    localStorage.setItem("approvedCourses", JSON.stringify(updatedApproved));
+
+    const enrolledCourses = JSON.parse(localStorage.getItem("enrolledCourses")) || [];
+    const updatedEnrolled = enrolledCourses.filter(c => c.id !== id);
+    localStorage.setItem("enrolledCourses", JSON.stringify(updatedEnrolled));
+
+    alert("Course removed successfully!");
   };
 
   return (
@@ -57,25 +70,35 @@ function CourseModeration() {
               </div>
             ))}
 
-            {course.status === "pending" && (
-              <div className="mt-2">
-                <Button
-                  variant="success"
-                  size="sm"
-                  className="me-2"
-                  onClick={() => updateCourseStatus(course.id, "approved")}
-                >
-                  Approve
-                </Button>
-                <Button
-                  variant="danger"
-                  size="sm"
-                  onClick={() => updateCourseStatus(course.id, "rejected")}
-                >
-                  Reject
-                </Button>
-              </div>
-            )}
+            <div className="mt-2">
+              {course.status === "pending" && (
+                <>
+                  <Button
+                    variant="success"
+                    size="sm"
+                    className="me-2"
+                    onClick={() => updateCourseStatus(course.id, "approved")}
+                  >
+                    Approve
+                  </Button>
+                  <Button
+                    variant="danger"
+                    size="sm"
+                    className="me-2"
+                    onClick={() => updateCourseStatus(course.id, "rejected")}
+                  >
+                    Reject
+                  </Button>
+                </>
+              )}
+              <Button
+                variant="outline-danger"
+                size="sm"
+                onClick={() => removeCourse(course.id)}
+              >
+                Remove
+              </Button>
+            </div>
           </ListGroup.Item>
         ))}
       </ListGroup>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Card, Row, Col, ProgressBar, Table } from "react-bootstrap";
 import Papa from "papaparse";
 
-// List of courses with Google Sheet CSV links
+
 const coursesConfig = [
   {
     name: "React Basics",

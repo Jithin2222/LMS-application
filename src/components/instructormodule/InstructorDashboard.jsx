@@ -1,16 +1,7 @@
 import React, { useState } from "react";
-import {
-  Container,
-  Row,
-  Col,
-  Tab,
-  Nav,
-  Navbar,
-  NavDropdown,
-  Button,
-  Card
-} from "react-bootstrap";
+import { Container, Row, Col,  Tab,  Nav,  Navbar,  NavDropdown, Button,  Badge,} from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import CourseCreation from "./CourseCreation";
 import StudentManagement from "./StudentManagement";
 import Analytics from "./Analytics";
@@ -18,58 +9,39 @@ import Analytics from "./Analytics";
 function InstructorDashboard({ courses, setCourses }) {
   const [activeTab, setActiveTab] = useState("profile");
   const navigate = useNavigate();
+  const { currentUser, logout } = useAuth();
 
-  // Mock instructor data
-  const instructor = {
-    name: "Priya Sharma",
-    email: "priya.sharma@example.com",
-    role: "Instructor",
-    bio: "Passionate educator with expertise in web development and React."
-  };
-
-  // Logout handler
   const handleLogout = () => {
+    logout();
     alert("Logged out successfully!");
-    navigate('/Login')
+    navigate("/login");
   };
+
+  if (!currentUser || currentUser.role !== "instructor") {
+    return (
+      <Container className="d-flex justify-content-center align-items-center vh-100">
+        <h3>⚠️ Unauthorized Access</h3>
+      </Container>
+    );
+  }
 
   return (
     <div className="d-flex flex-column min-vh-100">
-      {/* Header */}
       <Navbar bg="dark" variant="dark" expand="lg" className="shadow">
-        <Container>
+        <Container fluid>
           <Navbar.Brand>🎓 Learning Management System</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse className="justify-content-end">
-            <Nav>
-              <NavDropdown
-                title={`👩‍🏫 ${instructor.name}`}
-                id="instructor-profile-dropdown"
-                align="end"
-              >
-                <NavDropdown.Item onClick={() => setActiveTab("profile")}>
-                  Profile
-                </NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item onClick={handleLogout}>
-                  🚪 Logout
-                </NavDropdown.Item>
-              </NavDropdown>
-            </Nav>
+          <Navbar.Text id="instructor-profile-dropdown" align="end">{`${currentUser.email}`}</Navbar.Text> 
           </Navbar.Collapse>
         </Container>
       </Navbar>
 
-      {/* Main Content */}
-      <Container fluid className="p-4 bg-light flex-grow-1">
+      <Container fluid className="p-4 flex-grow-1">
         <Tab.Container activeKey={activeTab} onSelect={(k) => setActiveTab(k)}>
           <Row>
-            {/* Sidebar */}
             <Col sm={3}>
-              <Nav
-                variant="pills"
-                className="flex-column bg-white p-3 rounded shadow-sm"
-              >
+              <Nav  variant="pills"  className="flex-column bg-white p-3 rounded shadow-sm">
                 <Nav.Item>
                   <Nav.Link eventKey="profile">👤 Profile</Nav.Link>
                 </Nav.Item>
@@ -82,38 +54,47 @@ function InstructorDashboard({ courses, setCourses }) {
                 <Nav.Item>
                   <Nav.Link eventKey="analytics">📊 Analytics</Nav.Link>
                 </Nav.Item>
-                <Nav.Item>
-                  <Link to="/coursepage" className="nav-link">
+                {/* <Nav.Item>
+                  <Link to="/instructorcourses" className="nav-link">
                     🎬 Course View
                   </Link>
-                </Nav.Item>
+                </Nav.Item> */}
               </Nav>
             </Col>
 
             <Col sm={9}>
               <Tab.Content>
                 <Tab.Pane eventKey="profile">
-                  <Card className="shadow">
-                    <Card.Body>
-                      <h3>👤 Instructor Profile</h3>
-                      <p>
-                        <strong>Name:</strong> {instructor.name}
-                      </p>
-                      <p>
-                        <strong>Email:</strong> {instructor.email}
-                      </p>
-                      <p>
-                        <strong>Role:</strong> {instructor.role}
-                      </p>
-                      <p>
-                        <strong>Bio:</strong> {instructor.bio}
-                      </p>
-                      <Button variant="danger" onClick={handleLogout}>
-                        🚪 Logout
-                      </Button>
-                    </Card.Body> 
-                  </Card>
+                  <div
+                    className="p-4 rounded shadow-sm"
+                    style={{
+                      background: "rgba(255, 255, 255, 0.35)",
+                      backdropFilter: "blur(10px)",
+                    }}
+                  >
+                    <h3 className="mb-3">👤 Instructor Profile</h3>
+                    <Row>
+                      <Col md={6}>
+                        <p>
+                          <i className="bi bi-envelope-fill" style={{marginRight:"10px"}}></i>  
+                          {currentUser.email}
+                        </p>
+                        <p>
+                          <strong>Role:</strong>{" "}
+                          <Badge bg="info">{currentUser.role}</Badge>
+                        </p>
+                        <p>
+                          <strong>Joined:</strong>{" "}
+                          {new Date(currentUser.time).toLocaleString()}
+                        </p>
+                        <Button variant="outline-danger" onClick={handleLogout} className="mt-3">
+                          Logout
+                        </Button>
+                      </Col>
+                    </Row>
+                  </div>
                 </Tab.Pane>
+
                 <Tab.Pane eventKey="students">
                   <StudentManagement />
                 </Tab.Pane>
@@ -123,19 +104,17 @@ function InstructorDashboard({ courses, setCourses }) {
                 <Tab.Pane eventKey="course">
                   <CourseCreation courses={courses} setCourses={setCourses} />
                 </Tab.Pane>
-
               </Tab.Content>
             </Col>
           </Row>
         </Tab.Container>
       </Container>
-
-      {/* Footer */}
+      
       <footer className="bg-dark text-light text-center py-3 mt-auto">
         <Container>
           <p className="mb-0">
             © {new Date().getFullYear()} Learning Management System | Instructor:{" "}
-            {instructor.name}
+            {currentUser.email}
           </p>
         </Container>
       </footer>
@@ -144,5 +123,3 @@ function InstructorDashboard({ courses, setCourses }) {
 }
 
 export default InstructorDashboard;
-
-

@@ -7,7 +7,6 @@ const CourseList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const {courses} = useCourses();
   const navigate = useNavigate();
-
   const filteredCourses = courses.filter((course) =>
     course.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -23,6 +22,7 @@ const CourseList = () => {
               <Navbar.Toggle aria-controls="basic-navbar-nav" className="ms-auto" />
               <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
                   <Nav className='align-items-center fw-bold'>
+                    <Nav.Link href="/CoursePage">COURSES FROM INSTRUCTOR</Nav.Link>
                       <Nav.Link href="/freecourses">FREE COURSES</Nav.Link>
                       <Nav.Link href="/home">
                           <i class="bi bi-x-lg"></i>

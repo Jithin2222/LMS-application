@@ -9,11 +9,11 @@ function Dashboard() {
   const [activeTab, setActiveTab] = useState("user");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
-  const { user, logout } = useAuth(); // ✅ get from AuthContext
+  const { user, logout } = useAuth(); 
 
   const handleLogout = () => {
-    logout(); // clears auth state
-    navigate("/login"); // redirect
+    logout();
+    navigate("/login");
   };
 
   const renderContent = () => {
@@ -31,7 +31,6 @@ function Dashboard() {
 
   return (
     <div className="d-flex flex-column flex-md-row" style={{ minHeight: "100vh" }}>
-      {/* Sidebar */}
       <div
         className={`bg-dark text-white p-3 sidebar transition-all ${
           sidebarOpen ? "d-block" : "d-none d-md-block"
@@ -76,19 +75,14 @@ function Dashboard() {
           </li>
           <li>
             <button className="btn btn-danger mt-3 w-100" onClick={handleLogout}>
-              🚪 Logout
+               Logout
             </button>
           </li>
         </ul>
       </div>
 
-      {/* Main content */}
       <div className="flex-grow-1 p-4">
-        {/* Mobile menu button */}
-        <button
-          className="btn btn-outline-secondary d-md-none mb-3"
-          onClick={() => setSidebarOpen(!sidebarOpen)}
-        >
+        <button className="btn btn-outline-secondary d-md-none mb-3" onClick={() => setSidebarOpen(!sidebarOpen)}>
           ☰ Menu
         </button>
         {renderContent()}

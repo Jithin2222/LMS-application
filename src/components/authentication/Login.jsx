@@ -6,7 +6,7 @@ import { useAuth } from "../../context/AuthContext";
 const Login = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState({ useremail: "", userpassword: "" });
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -15,19 +15,18 @@ const Login = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    // Determine role
-    let role = null;
-    if (user.useremail.endsWith("@gmail.com")) role = "student";
-    else if (user.useremail.endsWith("@instructor.com")) role = "instructor";
-    else if (user.useremail.endsWith("@admin.com")) role = "admin";
+    const email = user.useremail.trim().toLowerCase();
+    let role = "";
+    if (email.endsWith("@gmail.com")) role = "student";
+    else if (email.endsWith("@instructor.com")) role = "instructor";
+    else if (email.endsWith("@admin.com")) role = "admin";
     else {
-      alert(" Please enter a valid email address");
+      alert(" Unauthorized email. Use @gmail.com, @instructor.com, or @admin.com");
       return;
     }
 
     const loggedInUser = {
-      email: user.useremail,
+      email,
       role,
       time: new Date().toISOString(),
     };
@@ -38,11 +37,9 @@ const Login = () => {
       allUsers.push(loggedInUser);
       localStorage.setItem("allUsers", JSON.stringify(allUsers));
     }
-
-    // Navigate based on role
     if (role === "student") navigate("/home");
-    else if (role === "instructor") navigate("/instructorDashboard");
-    else if (role === "admin") navigate("/admindashboard");
+    if (role === "instructor") navigate("/instructorDashboard");
+    if (role === "admin") navigate("/admindashboard");
   };
 
   return (
@@ -50,8 +47,7 @@ const Login = () => {
       <Row className="w-100 justify-content-center">
         <Col xs={12} sm={10} md={6} lg={4}>
           <Card className="shadow-lg rounded-4 border-0" style={{ backgroundColor: "#ffffff63" }}>
-            <Card.Header
-              className="text-center py-4"
+            <Card.Header  className="text-center py-4"
               style={{
                 color: "#000",
                 fontWeight: "bold",
@@ -69,7 +65,7 @@ const Login = () => {
                   <Form.Control
                     type="email"
                     name="useremail"
-                    value={user.useremail || ""}
+                    value={user.useremail}
                     onChange={handleChange}
                     placeholder="Enter your email"
                     style={{ borderRadius: "0.5rem", padding: "0.75rem" }}
@@ -81,7 +77,7 @@ const Login = () => {
                   <Form.Control
                     type="password"
                     name="userpassword"
-                    value={user.userpassword || ""}
+                    value={user.userpassword}
                     onChange={handleChange}
                     placeholder="Enter your password"
                     style={{ borderRadius: "0.5rem", padding: "0.75rem" }}
@@ -95,7 +91,6 @@ const Login = () => {
                     Forgot Password?
                   </a>
                 </div>
-
                 <Button
                   variant="primary"
                   type="submit"
@@ -105,26 +100,31 @@ const Login = () => {
                 >
                   Login
                 </Button>
-
                 <div className="text-center mb-3">
                   <span className="text-muted">Or login with</span>
                 </div>
-
                 <Row className="justify-content-center g-3 mb-4">
                   <Col xs="auto">
-                    <Button variant="outline-danger" className="rounded-circle p-2" style={{ width: "45px", height: "45px" }}></Button>
+                    <Button variant="outline-dark" className="rounded-circle p-2" style={{ width: "45px", height: "45px" }}>
+                      <i class="bi bi-google"></i>
+                    </Button>
                   </Col>
                   <Col xs="auto">
-                    <Button variant="outline-primary" className="rounded-circle p-2" style={{ width: "45px", height: "45px" }}></Button>
+                    <Button variant="outline-dark" className="rounded-circle p-2" style={{ width: "45px", height: "45px" }}>
+                      <i class="bi bi-facebook"></i>
+                    </Button>
                   </Col>
                   <Col xs="auto">
-                    <Button variant="outline-info" className="rounded-circle p-2" style={{ width: "45px", height: "45px" }}></Button>
+                    <Button variant="outline-dark" className="rounded-circle p-2" style={{ width: "45px", height: "45px" }}>
+                      <i class="bi bi-twitter-x"></i>
+                    </Button>
                   </Col>
                   <Col xs="auto">
-                    <Button variant="outline-dark" className="rounded-circle p-2" style={{ width: "45px", height: "45px" }}></Button>
+                    <Button variant="outline-dark" className="rounded-circle p-2" style={{ width: "45px", height: "45px" }}>
+                      <i class="bi bi-browser-edge"></i>
+                    </Button>
                   </Col>
                 </Row>
-
                 <div className="text-center">
                   <span className="me-2">Don’t have an account?</span>
                   <Button variant="outline-primary" size="sm" onClick={() => navigate("/register")}>
