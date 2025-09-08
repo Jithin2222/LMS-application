@@ -55,9 +55,7 @@ const CoursePage = () => {
                 <Card.Subtitle className="mb-2 text-muted">
                   By {course.author} , ${course.price}
                 </Card.Subtitle>
-                <Card.Text>{course.description}</Card.Text>
-
-                
+                <Card.Text>{course.description}</Card.Text>    
               </Card.Body>
             </Card>
           </Col>

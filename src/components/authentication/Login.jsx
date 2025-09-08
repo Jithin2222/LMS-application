@@ -17,9 +17,12 @@ const Login = () => {
     event.preventDefault();
     const email = user.useremail.trim().toLowerCase();
     let role = "";
-    if (email.endsWith("@gmail.com")) role = "student";
-    else if (email.endsWith("@instructor.com")) role = "instructor";
-    else if (email.endsWith("@admin.com")) role = "admin";
+    if (email.endsWith("@gmail.com")) 
+      role = "student";
+    else if (email.endsWith("@instructor.com")) 
+      role = "instructor";
+    else if (email.endsWith("@admin.com")) 
+      role = "admin";
     else {
       alert(" Unauthorized email. Use @gmail.com, @instructor.com, or @admin.com");
       return;
@@ -37,9 +40,12 @@ const Login = () => {
       allUsers.push(loggedInUser);
       localStorage.setItem("allUsers", JSON.stringify(allUsers));
     }
-    if (role === "student") navigate("/home");
-    if (role === "instructor") navigate("/instructorDashboard");
-    if (role === "admin") navigate("/admindashboard");
+    if (role === "student")
+      navigate("/home");
+    if (role === "instructor") 
+      navigate("/instructorDashboard");
+    if (role === "admin") 
+      navigate("/admindashboard");
   };
 
   return (
@@ -54,8 +60,7 @@ const Login = () => {
                 fontSize: "1.5rem",
                 borderTopLeftRadius: "1rem",
                 borderTopRightRadius: "1rem",
-              }}
-            >
+              }}>
               LOGIN
             </Card.Header>
             <Card.Body className="p-4">

@@ -16,7 +16,6 @@ function Profile(){
 
     const navigate = useNavigate();
     const[page, setPage] = useState("dashboard");
-    
     const[userData, setUserData]=useState(null);
 
     useEffect(()=>{
@@ -34,36 +33,36 @@ function Profile(){
         switch(page){
             case "dashboard":
                 return <Card className="p-3">
-                    <UserDashboard/>
-                </Card>;
+                            <UserDashboard/>
+                        </Card>;
             case "message":
                 return <Card className="p-3">
-                    <Message/>
-                </Card>;
+                            <Message/>
+                        </Card>;
             case "quiz":
                 return <Card className="p-3">
-                    <QuizPage/>
-                </Card>;
+                            <QuizPage/>
+                        </Card>;
             case "courses":
                 return <Card className="px-0">
-                    <CourseList/>
-                </Card>
+                            <CourseList/>
+                        </Card>
             case "forum":
                 return <Card className="p-3">
-                    <Forum/>
-                </Card>;
+                            <Forum/>
+                        </Card>;
             case "wishlist":
                 return <Card className="p-3">
-                    <WishlistPage/>
-                </Card>
+                            <WishlistPage/>
+                        </Card>
             case "notification":
                 return <Card className="p-3">
-                    <Notification/>
-                </Card>
+                            <Notification/>
+                        </Card>
             case "setting":
                 return <Card className="p-3">
-                    <Setting/>
-                </Card>
+                            <Setting/>
+                        </Card>
         }
     }
 
@@ -87,7 +86,6 @@ function Profile(){
                                     </small>
                                 </div>
                                 </div>
-
                                 <ListGroup variant="flush">
                                     <ListGroup.Item action onClick={()=> navigate('/home')}>
                                         <i className="bi bi-house-fill p-2"></i>    
@@ -137,7 +135,6 @@ function Profile(){
                             </Card.Body>
                         </Card>
                     </Col>
-
                     <Col md={9} className="p-4">
                         {renderPage()}
                     </Col>

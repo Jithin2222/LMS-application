@@ -7,10 +7,7 @@ function StudentManagement() {
   useEffect(() => {
     const users = JSON.parse(localStorage.getItem("users")) || [];
     const onlyStudents = users.filter((u) => u.role === "Student");
-    const withProgress = onlyStudents.map((s) => ({ ...s,
-      progress: s.progress || Math.floor(Math.random() * 40), 
-      enrolledOn: s.enrolledOn || new Date().toISOString().split("T")[0],
-    }));
+    const withProgress = onlyStudents.map((s) => ({ ...s, progress: s.progress || Math.floor(Math.random() * 40), enrolledOn: s.enrolledOn || new Date().toISOString().split("T")[0],}));
     setStudents(withProgress);
   }, []);
 
@@ -34,12 +31,7 @@ function StudentManagement() {
                 <td>{student.useremail}</td>
                 <td>{student.enrolledOn}</td>
                 <td>
-                  <ProgressBar
-                    now={student.progress}
-                    label={`${student.progress}%`}
-                    striped
-                    variant={student.progress > 50 ? "success" : "warning"}
-                  />
+                  <ProgressBar now={student.progress} label={`${student.progress}%`} striped variant={student.progress > 50 ? "success" : "warning"}/>
                 </td>
               </tr>
             ))}

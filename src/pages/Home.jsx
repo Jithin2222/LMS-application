@@ -76,8 +76,6 @@ const Home = () => {
         <p className='text-center'>Discover our top-rated courses across various categories. From coding and design to business and wellness, our courses are crafted to deliver results.</p>
       </Container>
 
-      {/* -course list here - <CourseList/>*/}
-
       <Testimonials/>
 
       <Container className='d-flex flex-column justify-content-center align-items-center' style={{ minHeight: '25vh' }}>
@@ -92,8 +90,7 @@ const Home = () => {
         </Button>
       </Container>
 
-      <Footer/>
-      
+      <Footer/>   
     </>
   )
 }

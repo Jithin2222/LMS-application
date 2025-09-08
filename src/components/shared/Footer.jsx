@@ -1,11 +1,5 @@
 import React from 'react'
 import { Col, Container, Row } from 'react-bootstrap';
-// import {
-//   FaFacebook,
-//   FaInstagram,
-//   FaTwitter,
-//   FaLinkedin,
-// } from "react-icons/fa";
 
 const Footer = () => {
   return (
@@ -43,16 +37,16 @@ const Footer = () => {
                     <h6 className="fw-bold">FOLLOW US</h6>
                     <div style={{ fontSize: "1.3rem" }} className="d-flex gap-3">
                     <a href="https://facebook.com" target="_blank" rel="noreferrer" style={{ color: "#ccc" }}>
-                        {/* <FaFacebook /> */}
+
                     </a>
                     <a href="https://instagram.com" target="_blank" rel="noreferrer" style={{ color: "#ccc" }}>
-                        {/* <FaInstagram /> */}
+                        
                     </a>
                     <a href="https://twitter.com" target="_blank" rel="noreferrer" style={{ color: "#ccc" }}>
-                        {/* <FaTwitter /> */}
+                        
                     </a>
                     <a href="https://linkedin.com" target="_blank" rel="noreferrer" style={{ color: "#ccc" }}>
-                        {/* <FaLinkedin /> */}
+                        
                     </a>
                     </div>
                 </Col>

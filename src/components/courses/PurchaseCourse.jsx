@@ -75,19 +75,10 @@ const PurchaseCourse = () => {
                         <h4 className="text-success mb-3">{course.price}</h4>
                         <p className="text-secondary mb-4">{course.description}</p>
 
-                        <Button 
-                            onClick={handlePayment} 
-                            variant="primary" 
-                            size="lg" 
-                            className="w-100 mb-2"
-                        >
+                        <Button onClick={handlePayment} variant="primary" size="lg" className="w-100 mb-2">
                             Proceed to Payment
                         </Button>
-                        <Button 
-                            variant="outline-secondary" 
-                            className="w-100" 
-                            onClick={() => navigate(-1)}
-                        >
+                        <Button variant="outline-secondary" className="w-100" onClick={() => navigate(-1)}>
                             Cancel
                         </Button>
                     </Card>

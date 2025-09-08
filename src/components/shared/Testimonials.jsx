@@ -45,10 +45,10 @@ const Testimonials = () => {
                         </Col>
                         </Row>
                         <div className="text-warning" style={{ fontSize: "1rem" }}>
-                        ★★★★☆ {/* Unicode stars: ★ full, ☆ empty */}
+                        ★★★★☆ 
                         </div>
                         <Card.Text>
-                            The best learning experience I’ve ever had online. Everything is clear and beautifully organized. Highly recommended!
+                            The best learning experience I've ever had online. Everything is clear and beautifully organized. Highly recommended!
                         </Card.Text> 
                         <Card.Link href='#'>Read More</Card.Link>
                     </Card.Body>
@@ -69,7 +69,7 @@ const Testimonials = () => {
                         </Col>
                         </Row>
                         <div className="text-warning" style={{ fontSize: "1rem" }}>
-                        ★★★★☆ {/* Unicode stars: ★ full, ☆ empty */}
+                        ★★★★☆
                         </div>
                         <Card.Text>
                             I was able to upskill quickly and even land a new job after completing just one course. Totally worth it!

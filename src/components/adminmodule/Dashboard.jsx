@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext"; // ✅ useAuth from context
+import { useAuth } from "../../context/AuthContext";
 import UserManagement from "./UserManagement";
 import CourseModeration from "./CourseModeration";
 import Reports from "./Reports";

@@ -14,10 +14,8 @@ function Register() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const existingUsers = JSON.parse(localStorage.getItem("users")) || [];
-
     const newUsers = [...existingUsers, user];
     localStorage.setItem("users", JSON.stringify(newUsers));
-    
     localStorage.setItem("userData", JSON.stringify(user));
     navigate("/home");
   };
